@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>io.redick.quarkus</groupId>
+    <artifactId>quarkus-project-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <compiler-plugin.version>3.8.1</compiler-plugin.version>
+        <maven.compiler.release>11</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
+        <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
+        <quarkus.platform.version>2.10.0.Final</quarkus.platform.version>
+        <skipITs>true</skipITs>
+        <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
+    </properties>
+    <modules>
+        <module>quarkus-project-mysql-mybatisplus</module>
+        <module>quarkus-project-quickstart</module>
+        <module>quarkus-project-common</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.22</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <extensions>
+            <extension>
+                <groupId>io.quarkus.bot</groupId>
+                <artifactId>build-reporting-maven-extension</artifactId>
+                <version>1.0.5</version>
+            </extension>
+        </extensions>
+        <plugins>
+            <plugin>
+                <groupId>${quarkus.platform.group-id}</groupId>
+                <artifactId>quarkus-maven-plugin</artifactId>
+                <version>${quarkus.platform.version}</version>
+                <extensions>true</extensions>
+            </plugin>
+        </plugins>
+    </build>
+    <profiles>
+        <profile>
+            <id>app1Dev</id>
+            <modules>
+                <module>quarkus-project-quickstart</module>
+            </modules>
+            <build>
+                <defaultGoal>clean compile quarkus:dev</defaultGoal>
+            </build>
+        </profile>
+        <profile>
+            <id>app2Dev</id>
+            <modules>
+                <module>quarkus-project-mysql-mybatisplus</module>
+            </modules>
+            <build>
+                <defaultGoal>clean compile quarkus:dev</defaultGoal>
+            </build>
+        </profile>
+    </profiles>
+</project>
