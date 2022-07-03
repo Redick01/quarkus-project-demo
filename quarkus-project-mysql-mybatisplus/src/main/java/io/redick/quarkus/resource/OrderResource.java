@@ -1,6 +1,6 @@
 package io.redick.quarkus.resource;
 
-import io.quarkus.logging.Log;
+import io.redick.quarkus.annotation.Logged;
 import io.redick.quarkus.db.mapper.OrderMapper;
 import io.redick.quarkus.db.model.Order;
 import io.redick.quarkus.dto.http.HttpResponseDTO;
@@ -27,8 +27,10 @@ public class OrderResource {
     @Inject
     OrderMapper orderMapper;
 
+
     @GET
     @Path("/order/{orderNo}")
+    @Logged
     public Response order(@PathParam("orderNo") String orderNo) {
         log.info("请求参数：{}", orderNo);
         Order order = orderMapper.getOrderByOrderNo(orderNo);
@@ -44,26 +46,28 @@ public class OrderResource {
 
     @POST
     @Path("/addOrder")
-    public Response addOrder(AddOrderRequest request) {
+    @Logged
+    public HttpResponseDTO addOrder(AddOrderRequest request) {
+        log.info("请求参数：{}", request);
         if (null == request || null == request.getCount() || null == request.getProductId()) {
             HttpResponseDTO<Object> responseDTO = HttpResponseDTO
                     .builder()
                     .resCode("A001")
                     .resMessage("参数为空")
                     .build();
-            return Response.ok(responseDTO).build();
+            return responseDTO;
         } else {
             Order order = new Order();
             order.setOrderNo(UUID.randomUUID().toString());
             order.setProductId(request.getProductId());
             order.setPayCount(request.getCount());
-
+            orderMapper.insertOrder(order);
             HttpResponseDTO<Object> responseDTO = HttpResponseDTO
                     .builder()
                     .resCode("0000")
                     .resMessage("成功")
                     .build();
-            return Response.ok(responseDTO).build();
+            return responseDTO;
         }
     }
 }
