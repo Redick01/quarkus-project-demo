@@ -23,6 +23,8 @@
         <module>quarkus-project-mysql-mybatisplus</module>
         <module>quarkus-project-quickstart</module>
         <module>quarkus-project-common</module>
+        <module>quarkus-project-mysql-hibernate</module>
+        <module>quarkus-project-swaggerui</module>
     </modules>
 
     <dependencies>
